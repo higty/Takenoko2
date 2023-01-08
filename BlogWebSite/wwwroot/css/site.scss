@@ -1,0 +1,35 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    background-color: #ececec;
+
+    header {
+        background-color: #800000;
+        color: #ffffff;
+        margin-bottom: 40px;
+        padding: 8px;
+    }
+
+    .main-content-panel {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .blog-entry-panel {
+        font-size: 24px;
+
+        time {
+            margin-right: 8px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .body-text {
+            font-size:18px;
+            line-height: 1.5;
+        }
+    }
+}

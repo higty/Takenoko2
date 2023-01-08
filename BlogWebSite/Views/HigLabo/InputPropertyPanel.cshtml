@@ -1,0 +1,60 @@
+﻿@model HigLabo.Web.UI.InputPropertyPanel
+
+<div class="input-property-panel @Model.ElementType.ToString().ToLower()"
+     input-property-panel="true" element-type="@Model.ElementType.ToStringFromEnum()"
+     @Model.GetRecordTypeAttributeHtmlString()@Model.Attributes.GetHtmlString()>
+    @if (Model.ElementType != InputElementType.CheckBox)
+    {
+        <div class="property-name" property-name="true">@Model.Text</div>
+    }
+    @if (Model.CanFilter)
+    {
+        <div class="filter-textbox-panel">
+            <input type="text" filter-textbox="true" placeholder="@Model.TextSettings.SearchCandidate" />
+        </div>
+    }
+    <div class="property-value-panel">
+        @switch (Model.ElementType)
+        {
+            case InputElementType.Hidden: await Html.RenderPartialAsync(HigLaboView.InputPropertyHiddenPanel, Model); break;
+            case InputElementType.TextBox: await Html.RenderPartialAsync(HigLaboView.InputPropertyTextBoxPanel, Model); break;
+            case InputElementType.TextArea: await Html.RenderPartialAsync(HigLaboView.InputPropertyTextAreaPanel, Model); break;
+            case InputElementType.RichTextBox: await Html.RenderPartialAsync(HigLaboView.InputPropertyRichTextBoxPanel, Model);  break;
+            case InputElementType.ReadonlyTextBox:await Html.RenderPartialAsync(HigLaboView.InputPropertyReadonlyTextBoxPanel, Model); break;
+            case InputElementType.Password: await Html.RenderPartialAsync(HigLaboView.InputPropertyPasswordPanel, Model);break;
+            case InputElementType.Calendar:await Html.RenderPartialAsync(HigLaboView.InputPropertyCalendarPanel, Model);break;
+            case InputElementType.Date:await Html.RenderPartialAsync(HigLaboView.InputPropertyDatePanel, Model);break;
+            case InputElementType.DateDropDownList:await Html.RenderPartialAsync(HigLaboView.InputPropertyDateDropDownListPanel, Model);break;
+            case InputElementType.Time:await Html.RenderPartialAsync(HigLaboView.InputPropertyTimePanel, Model);break;
+            case InputElementType.DateTime:await Html.RenderPartialAsync(HigLaboView.InputPropertyDateTimePanel, Model);break;
+            case InputElementType.DateDuration:await Html.RenderPartialAsync(HigLaboView.InputPropertyDateDurationPanel, Model);break;
+            case InputElementType.TimeDuration:await Html.RenderPartialAsync(HigLaboView.InputPropertyTimeDurationPanel, Model);break;
+            case InputElementType.DateTimeDuration:await Html.RenderPartialAsync(HigLaboView.InputPropertyDateTimeDurationPanel, Model);break;
+            case InputElementType.CheckBox:await Html.RenderPartialAsync(HigLaboView.InputPropertyCheckBoxPanel, Model);break;
+            case InputElementType.SelectButton:await Html.RenderPartialAsync(HigLaboView.InputPropertyRadioButtonListPanel, Model);break;
+            case InputElementType.RadioButtonList:await Html.RenderPartialAsync(HigLaboView.InputPropertyRadioButtonListPanel, Model);break;
+            case InputElementType.DropDownList:await Html.RenderPartialAsync(HigLaboView.InputPropertyDropDownListPanel, Model);break;
+            case InputElementType.CheckBoxList:await Html.RenderPartialAsync(HigLaboView.InputPropertyCheckBoxListPanel, Model);break;
+            case InputElementType.Record:await Html.RenderPartialAsync(HigLaboView.InputPropertyRecordPanel, Model);break;
+            case InputElementType.RecordList:await Html.RenderPartialAsync(HigLaboView.InputPropertyRecordListPanel, Model);break;
+            case InputElementType.Color:await Html.RenderPartialAsync(HigLaboView.InputPropertyColorPanel, Model);break;
+            default: throw new SwitchStatementNotImplementException<InputElementType>(Model.ElementType);
+        }
+        @if (Model.ElementType == InputElementType.Record || Model.ElementType == InputElementType.RecordList)
+        {
+            var rpl = Model as InputPropertySelectRecordPanel;
+            await Html.RenderPartialAsync(HigLaboView.InputPropertySearchRecordListPanel, rpl.SearchRecordListPanel);
+        }
+
+    </div>
+    @if (Model.ElementType == InputElementType.Color)
+    {
+        var cpl = Model as InputPropertyColorPanel;
+        await Html.RenderPartialAsync(HigLaboView.InputPropertyColorTablePanel, cpl);
+    }
+    @{
+        await Html.RenderPartialAsync(Model.InputPropertyPanelMessagePanel);
+        await Html.RenderPartialAsync(Model.ValidationResultMessagePanel);
+    }
+</div>
+

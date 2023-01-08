@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BlogWebSite</title>
+    <link href="/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div>Takenoko2 Blog web site</div>
+    </header>
+    <div class="main-content-panel">
+        @RenderBody()
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

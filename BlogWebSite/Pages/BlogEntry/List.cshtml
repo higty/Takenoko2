@@ -1,0 +1,13 @@
+﻿@page "/blog/entry/list"
+@model BlogWebSite.Pages.BlogEntry.ListModel
+@{
+}
+<div>BlogList page</div>
+
+@foreach (var item in Model.BlogEntryList)
+{
+    <div class="blog-entry-panel">
+        <time>@item.CreateTime.ToString("yyyy/MM/dd HH:mm")</time>
+        <a href="/blog/entry/@item.EntryId/view">@item.Title</a>
+    </div>
+}
