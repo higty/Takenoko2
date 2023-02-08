@@ -32,7 +32,6 @@ export class CKEditorTextBox {
                     "imageStyle:full", "imageStyle:side", "mediaEmbed",
                     "insertTable", "tableColumn", "tableRow", "mergeTableCells"
                 ]
-                //shouldNotGroupWhenFull: true
             },
             link: {
                 addTargetToExternalLinks: true
@@ -115,7 +114,6 @@ export class CKEditorTextBox {
         var tx = $(element);
         var div = $(this.floatingTextBoxPanel);
         var rtx = this;
-        //Protect from infinite loop...
         if (rtx.targetTextbox == element) {
             return;
         }
@@ -186,7 +184,6 @@ export class CKEditorTextBox {
         return this.editor.getData();
     }
     setData(value) {
-        //Initialized.
         if (this.element != null) {
             this.editor.setData(value);
         }

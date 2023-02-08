@@ -1,15 +1,3 @@
-/*
- * Created by Ivan Sanz (@isc30)
- * Copyright © 2017 Ivan Sanz Carasa. All rights reserved.
-*/
-/*export function Lazy<T>(factory: () => T): () => T
-{
-    let instance: T;
-    
-    return () => instance !== undefined
-        ? instance
-        : (instance = factory());
-}*/
 export class Cached {
     constructor() {
         this._isValid = false;

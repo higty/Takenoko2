@@ -49,7 +49,7 @@ export class PopupPanel {
         }
         else {
             if (top + height > windowMaxHeight) {
-                var top1 = top - pl.getInnerHeight() - $(offsetPanel).getOuterHeight() - 2; //Adjust border width
+                var top1 = top - pl.getInnerHeight() - $(offsetPanel).getOuterHeight() - 2;
                 if (top1 > 0) {
                     pl.setStyle("top", top1 + "px");
                 }

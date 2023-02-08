@@ -1,13 +1,7 @@
-// -
-// Created by Ivan Sanz (@isc30)
-// Copyright © 2017 Ivan Sanz Carasa. All rights reserved.
-// -
 import { ArrayIterator } from "./Iterators.js";
 import { strictEqualityComparer, combineComparers, createComparer } from "./Comparers.js";
 import { Dictionary, List } from "./Collections.js";
 import { Cached } from "./Utils.js";
-// endregion
-// region EnumerableBase
 export class EnumerableBase {
     constructor(source) {
         this.source = source;
@@ -37,7 +31,6 @@ export class EnumerableBase {
     }
     count(predicate) {
         if (predicate !== undefined) {
-            // Don't copy iterators
             return new ConditionalEnumerable(this, predicate).count();
         }
         let result = 0;
@@ -45,12 +38,10 @@ export class EnumerableBase {
         while (this.next()) {
             ++result;
         }
-        // tslint:disable-next-line:no-bitwise
         return result >>> 0;
     }
     any(predicate) {
         if (predicate !== undefined) {
-            // Don't copy iterators
             return new ConditionalEnumerable(this, predicate).any();
         }
         this.reset();
@@ -161,7 +152,6 @@ export class EnumerableBase {
     }
     firstOrDefault(predicate) {
         if (predicate !== undefined) {
-            // Don't copy iterators
             return new ConditionalEnumerable(this, predicate).firstOrDefault();
         }
         this.reset();
@@ -206,7 +196,6 @@ export class EnumerableBase {
     }
     lastOrDefault(predicate) {
         if (predicate !== undefined) {
-            // Don't copy iterators
             return new ConditionalEnumerable(this, predicate).lastOrDefault();
         }
         const reversed = new ReverseEnumerable(this);
@@ -231,7 +220,6 @@ export class EnumerableBase {
     }
     singleOrDefault(predicate) {
         if (predicate !== undefined) {
-            // Don't copy iterators
             return new ConditionalEnumerable(this, predicate).singleOrDefault();
         }
         this.reset();
@@ -263,7 +251,6 @@ export class EnumerableBase {
     }
     min(selector) {
         if (selector !== undefined) {
-            // Don't copy iterators
             return new TransformEnumerable(this, selector).min();
         }
         return this.aggregate((previous, current) => (previous !== undefined && previous < current)
@@ -278,7 +265,6 @@ export class EnumerableBase {
     }
     max(selector) {
         if (selector !== undefined) {
-            // Don't copy iterators
             return new TransformEnumerable(this, selector).max();
         }
         return this.aggregate((previous, current) => (previous !== undefined && previous > current)
@@ -320,9 +306,11 @@ export class EnumerableBase {
         return new ZippedEnumerable(this, otherAsEnumerable, selector);
     }
 }
-// endregion
-// region Enumerable
 export class Enumerable extends EnumerableBase {
+    constructor(source) {
+        super(source);
+        this.currentValue = new Cached();
+    }
     static fromSource(source) {
         if (source instanceof Array) {
             return new ArrayEnumerable(source);
@@ -338,12 +326,10 @@ export class Enumerable extends EnumerableBase {
         }
         const source = new Array(count);
         if (ascending) {
-            // tslint:disable-next-line:curly
             for (let i = 0; i < count; source[i] = start + (i++))
                 ;
         }
         else {
-            // tslint:disable-next-line:curly
             for (let i = 0; i < count; source[i] = start - (i++))
                 ;
         }
@@ -358,10 +344,6 @@ export class Enumerable extends EnumerableBase {
             source[i] = element;
         }
         return new ArrayEnumerable(source);
-    }
-    constructor(source) {
-        super(source);
-        this.currentValue = new Cached();
     }
     copy() {
         return new Enumerable(this.source.copy());
@@ -381,8 +363,6 @@ export class Enumerable extends EnumerableBase {
         return super.next();
     }
 }
-// endregion
-// region ConditionalEnumerable
 export class ConditionalEnumerable extends Enumerable {
     constructor(source, predicate) {
         super(source);
@@ -399,8 +379,6 @@ export class ConditionalEnumerable extends Enumerable {
         return hasValue;
     }
 }
-// endregion
-// region SkipWhileEnumerable
 export class SkipWhileEnumerable extends Enumerable {
     constructor(source, predicate) {
         super(source);
@@ -426,8 +404,6 @@ export class SkipWhileEnumerable extends Enumerable {
         return hasValue;
     }
 }
-// endregion
-// region TakeWhileEnumerable
 export class TakeWhileEnumerable extends Enumerable {
     constructor(source, predicate) {
         super(source);
@@ -451,8 +427,6 @@ export class TakeWhileEnumerable extends Enumerable {
         return false;
     }
 }
-// endregion
-// region ConcatEnumerable
 export class ConcatEnumerable extends Enumerable {
     constructor(left, right) {
         super(left);
@@ -488,8 +462,6 @@ export class ConcatEnumerable extends Enumerable {
         return this.currentValue.value;
     }
 }
-// endregion
-// region UniqueEnumerable
 export class UniqueEnumerable extends Enumerable {
     constructor(source, keySelector) {
         super(source);
@@ -524,8 +496,6 @@ export class UniqueEnumerable extends Enumerable {
         return hasValue;
     }
 }
-// endregion
-// region RangeEnumerable
 export class RangeEnumerable extends Enumerable {
     constructor(source, start, count) {
         if ((start !== undefined && start < 0) || (count !== undefined && count < 0)) {
@@ -571,8 +541,6 @@ export class RangeEnumerable extends Enumerable {
         return super.value();
     }
 }
-// endregion
-// region TransformEnumerable
 export class TransformEnumerable extends EnumerableBase {
     constructor(source, transform) {
         super(source);
@@ -597,8 +565,6 @@ export class TransformEnumerable extends EnumerableBase {
         return super.next();
     }
 }
-// endregion
-// region ReverseEnumerable
 export class ReverseEnumerable extends Enumerable {
     constructor(source) {
         super(source);
@@ -647,7 +613,7 @@ export class ReverseEnumerable extends Enumerable {
         return this.source.min();
     }
     reverse() {
-        return this.source.copy(); // haha so smart
+        return this.source.copy();
     }
     sum(selector) {
         return this.source.sum(selector);
@@ -666,8 +632,6 @@ export class ReverseEnumerable extends Enumerable {
         return this._elements.value[(this._elements.value.length - 1) - this._currentIndex];
     }
 }
-// endregion
-// region OrderedEnumerable
 export class OrderedEnumerable extends EnumerableBase {
     constructor(source, comparer) {
         super(source);
@@ -712,14 +676,10 @@ export class OrderedEnumerable extends EnumerableBase {
         return this.isValidIndex();
     }
     toArray() {
-        // Allocate the array before sorting
-        // It's faster than working with anonymous reference
         const result = this.source.toArray();
         return result.sort(this._comparer);
     }
 }
-// endregion
-// region ArrayEnumerable
 export class ArrayEnumerable extends Enumerable {
     constructor(source) {
         super(new ArrayIterator(source));
@@ -771,8 +731,6 @@ export class ArrayEnumerable extends Enumerable {
         return this.list.lastOrDefault();
     }
 }
-// endregion
-// region DefaultIfEmptyEnumerable
 export class DefaultIfEmptyEnumerable extends EnumerableBase {
     constructor(source, defaultValue) {
         super(source);
@@ -790,7 +748,6 @@ export class DefaultIfEmptyEnumerable extends EnumerableBase {
     }
     next() {
         const hasNextElement = super.next();
-        // single default element
         this._mustUseDefaultValue = this._mustUseDefaultValue === undefined && !hasNextElement;
         return this._mustUseDefaultValue || hasNextElement;
     }
@@ -799,8 +756,6 @@ export class DefaultIfEmptyEnumerable extends EnumerableBase {
         this._mustUseDefaultValue = undefined;
     }
 }
-// endregion
-// region ZippedEnumerable
 export class ZippedEnumerable extends EnumerableBase {
     constructor(source, otherSource, selector) {
         super(source);
@@ -832,5 +787,4 @@ export class ZippedEnumerable extends EnumerableBase {
         return !this._isOneOfTheSourcesFinished;
     }
 }
-// endregion
 //# sourceMappingURL=Enumerables.js.map

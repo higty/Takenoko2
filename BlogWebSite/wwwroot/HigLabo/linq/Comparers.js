@@ -1,7 +1,3 @@
-/*
- * Created by Ivan Sanz (@isc30)
- * Copyright © 2017 Ivan Sanz Carasa. All rights reserved.
-*/
 export const strictEqualityComparer = () => (left, right) => left === right;
 export function combineComparers(left, right) {
     return (l, r) => left(l, r) || right(l, r);
