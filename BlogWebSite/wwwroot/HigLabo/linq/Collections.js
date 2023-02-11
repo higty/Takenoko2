@@ -1,5 +1,11 @@
+// -
+// Created by Ivan Sanz (@isc30)
+// Copyright © 2017 Ivan Sanz Carasa. All rights reserved.
+// -
 import { ArrayEnumerable, ConcatEnumerable, ConditionalEnumerable, Enumerable, OrderedEnumerable, RangeEnumerable, ReverseEnumerable, TransformEnumerable, UniqueEnumerable, } from "./Enumerables.js";
 import { strictEqualityComparer, createComparer } from "./Comparers.js";
+// endregion
+// region EnumerableCollection
 export class EnumerableCollection {
     toList() {
         return new List(this.toArray());
@@ -120,6 +126,7 @@ export class EnumerableCollection {
     }
     min(selector) {
         if (selector !== undefined) {
+            // Don't copy iterators
             return new TransformEnumerable(this.asEnumerable(), selector).min();
         }
         return this.aggregate((previous, current) => (previous !== undefined && previous < current)
@@ -134,6 +141,7 @@ export class EnumerableCollection {
     }
     max(selector) {
         if (selector !== undefined) {
+            // Don't copy iterators
             return new TransformEnumerable(this.asEnumerable(), selector).max();
         }
         return this.aggregate((previous, current) => (previous !== undefined && previous > current)
@@ -204,6 +212,8 @@ export class EnumerableCollection {
         return this.asEnumerable().zip(other, selector);
     }
 }
+// endregion
+// region ArrayQueryable
 export class ArrayQueryable extends EnumerableCollection {
     constructor(elements = []) {
         super();
@@ -421,16 +431,6 @@ export class Stack extends ArrayQueryable {
     }
 }
 export class Dictionary extends EnumerableCollection {
-    constructor(keyValuePairs) {
-        super();
-        this.clear();
-        if (keyValuePairs !== undefined) {
-            for (let i = 0; i < keyValuePairs.length; ++i) {
-                const pair = keyValuePairs[i];
-                this.set(pair.key, pair.value);
-            }
-        }
-    }
     static fromArray(array, keySelector, valueSelector) {
         const keyValuePairs = array.map(v => {
             return {
@@ -444,6 +444,16 @@ export class Dictionary extends EnumerableCollection {
         const keys = new List(Object.getOwnPropertyNames(object));
         const keyValues = keys.select(k => ({ key: k, value: object[k] }));
         return new Dictionary(keyValues.toArray());
+    }
+    constructor(keyValuePairs) {
+        super();
+        this.clear();
+        if (keyValuePairs !== undefined) {
+            for (let i = 0; i < keyValuePairs.length; ++i) {
+                const pair = keyValuePairs[i];
+                this.set(pair.key, pair.value);
+            }
+        }
     }
     copy() {
         return new Dictionary(this.toArray());
@@ -518,4 +528,5 @@ export class Dictionary extends EnumerableCollection {
         this.dictionary[key] = value;
     }
 }
+// endregion
 //# sourceMappingURL=Collections.js.map

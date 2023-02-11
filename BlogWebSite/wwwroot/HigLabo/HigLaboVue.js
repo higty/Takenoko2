@@ -20,6 +20,7 @@ export class HigLaboVue {
         dummyContainer.appendChild(dummyElement);
         const app = HigLaboVue.createApp(templateID, data);
         app.mount(dummyElement);
+        //Remove [data-v-app] element and replace it.
         const elementList = $(dummyElement.parentElement).find("[data-v-app]").getElementList();
         const createdElementList = new List();
         for (var i = 0; i < elementList.length; i++) {
@@ -63,9 +64,10 @@ export class HigLaboVue {
             throw new Error("element must not be null.");
         }
         const span = document.createElement("span");
-        element.appendChild(span);
+        element.appendChild(span); //Dummy element
         const app = HigLaboVue.createApp(templateID, data);
         app.mount(span);
+        //Remove Dummy element and replace it.
         const elementList = $(element).find("[data-v-app]").getElementList();
         const createdElementList = new List();
         for (var i = 0; i < elementList.length; i++) {

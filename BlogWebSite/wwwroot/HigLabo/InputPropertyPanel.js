@@ -614,6 +614,7 @@ export class InputPropertyPanel {
                     InputPropertyPanel.setRadioButtonProperty(pl, name, hKey);
                     const checkBoxList = $(pl).find("input[type='checkbox']").getElementList();
                     for (var i = 0; i < checkBoxList.length; i++) {
+                        //InputPropertyPanel.setCheckBoxProperty(checkBoxList[i], name, hKey);
                     }
                     spl.scrollTop = 20000;
                 }
@@ -778,6 +779,7 @@ export class InputPropertyPanel {
             let ee = HigLaboVue.create(templateID, r);
             for (var eIndex = 0; eIndex < ee.length; eIndex++) {
                 let hKey = $(ee[eIndex]).getAttribute("h-key");
+                //既に存在する場合、追加しない
                 if ($(spl).find("[h-key='" + hKey + "']").getElementCount() > 0) {
                     continue;
                 }
@@ -951,6 +953,7 @@ export class InputPropertyPanel {
             }
             else if (elementType == "CheckBox") {
                 if (key != "") {
+                    //InputPropertyPanel.setCheckBoxProperty(propertyPanel.getFirstElement(), name, key);
                 }
                 propertyPanel.find("input").setChecked(v);
             }
@@ -1103,6 +1106,7 @@ export class InputPropertyPanel {
                 $(propertyPanel).find("[date-picker]").setValue(v);
             }
             else if (elementType == "DateDropDownList") {
+                //Do nothing...
             }
             else if (elementType == "Time") {
                 $(propertyPanel).find("input").setValue(v);

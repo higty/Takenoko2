@@ -76,6 +76,10 @@ export class TinyMceTextBox {
                 }
             },
             autosave_ask_before_unload: false,
+            //autosave_interval: '30s',
+            //autosave_prefix: '{path}{query}-{id}-',
+            //autosave_restore_when_empty: false,
+            //autosave_retention: '2m',
             image_advtab: true,
             codesample_languages: [
                 { value: "plaintext", text: "Plain text" },
@@ -104,11 +108,24 @@ export class TinyMceTextBox {
                 { value: "yaml", text: "YAML" },
                 { value: "diff", text: "Diff" },
             ],
-            link_list: [],
-            image_list: [],
-            image_class_list: [],
+            link_list: [
+            //    { title: 'My page 1', value: 'https://www.tiny.cloud' },
+            //    { title: 'My page 2', value: 'http://www.moxiecode.com' }
+            ],
+            image_list: [
+            //    { title: 'My page 1', value: 'https://www.tiny.cloud' },
+            //    { title: 'My page 2', value: 'http://www.moxiecode.com' }
+            ],
+            image_class_list: [
+            //    { title: 'None', value: '' },
+            //    { title: 'Some class', value: 'class-name' }
+            ],
             importcss_append: true,
-            templates: [],
+            templates: [
+            //    { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            //    { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+            //    { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+            ],
             template_cdate_format: '[Created at: %m/%d/%Y : %H:%M:%S]',
             template_mdate_format: '[Modified at: %m/%d/%Y : %H:%M:%S]',
             autolink_pattern: /^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+\-]+@)(.+)$/i,

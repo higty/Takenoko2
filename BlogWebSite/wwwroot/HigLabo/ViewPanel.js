@@ -123,6 +123,7 @@ export class ViewPanel {
         if (key == null) {
             return;
         }
+        //Reeplace record object on memory.
         const r = this.getRecord(key);
         if (r == null) {
             this.recordList.push(record);
@@ -141,6 +142,7 @@ export class ViewPanel {
         if (this.templateID == "") {
             return;
         }
+        //Replace element on UI.
         const l = new List();
         const elementList = $("body").find("[h-key='" + key + "']").getElementList();
         for (var i = 0; i < elementList.length; i++) {

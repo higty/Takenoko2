@@ -1,3 +1,20 @@
+/*
+ * Created by Ivan Sanz (@isc30)
+ * Copyright © 2017 Ivan Sanz Carasa. All rights reserved.
+*/
+/* ES6 compatibility layer :D
+interface IteratorResult<T>
+{
+    done: boolean;
+    value: T;
+}
+
+interface Iterator<T>
+{
+    next(value?: any): IteratorResult<T>;
+    return?(value?: any): IteratorResult<T>;
+    throw?(e?: any): IteratorResult<T>;
+}*/
 export class ArrayIterator {
     constructor(source) {
         this.source = source;

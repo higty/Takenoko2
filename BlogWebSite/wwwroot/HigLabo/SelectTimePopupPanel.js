@@ -88,7 +88,7 @@ export default class SelectTimePopupPanel {
     durationMinutePanel_Click(target, e) {
         const div = $(target);
         const minute = parseInt(div.getAttribute("minute"));
-        const startTime = new DateTime("2000/1/1 " + $(this.textBox).getValue());
+        const startTime = new DateTime("2000/1/1 " + $(this.textBox).getValue()); // Dummy date to calculate endtime...
         const endTime = startTime.addMinute(minute);
         var hh = endTime.toString("hh");
         if (startTime.day != endTime.day) {
@@ -166,7 +166,7 @@ export default class SelectTimePopupPanel {
         }
         else {
             if (top + height > windowMaxHeight) {
-                var top1 = top - pl.getInnerHeight() - $(offsetPanel).getOuterHeight() - 2;
+                var top1 = top - pl.getInnerHeight() - $(offsetPanel).getOuterHeight() - 2; //Adjust border width
                 if (top1 > 0) {
                     pl.setStyle("top", top1 + "px");
                 }
