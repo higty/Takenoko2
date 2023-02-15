@@ -22,10 +22,10 @@ class Add {
         HttpClient.postJson("/api/blog/entry/add", p, this.saveCallback.bind(this));
     }
     private saveCallback(response: HttpResponse) {
-        alert("Saved!");
         location.href = "/blog/entry/list";
     }
 }
 
 const page = new Add();
 page.initialize();
+window["currentPage"] = page;

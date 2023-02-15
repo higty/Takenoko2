@@ -20,10 +20,10 @@ class Add {
         HttpClient.postJson("/api/blog/entry/add", p, this.saveCallback.bind(this));
     }
     saveCallback(response) {
-        alert("Saved!");
         location.href = "/blog/entry/list";
     }
 }
 const page = new Add();
 page.initialize();
+window["currentPage"] = page;
 //# sourceMappingURL=add.js.map
