@@ -9,19 +9,47 @@ namespace OpenAISampleConsoleApp
             var apiKey = File.ReadAllText("C:\\Dev\\ChatGPTApiKey.txt");
             var cl = new OpenAIClient(apiKey);
 
-            var imageMessage = new ChatImageMessage(ChatMessageRole.User);
-            imageMessage.AddTextContent("この画像について説明してください。");
-            imageMessage.AddImageFile(Path.Combine(Environment.CurrentDirectory, "Image", "Castle.jpg"));
-
-            var p = new ChatCompletionsParameter();
-            p.Messages.Add(imageMessage);
-            p.Model = "gpt-4-vision-preview";
-            p.Stream = true;
-
-            await foreach (var text in cl.ChatCompletionsStreamAsync(p))
+            var previousOutputText = "";
+            var model = "gpt-4";
+            while (true)
             {
-                Console.Write(text);
+                Console.WriteLine("プロンプトを入力してください。（/helpでコマンドを表示）");
+                var inputText = Console.ReadLine();
+                if (inputText == null) { continue; }
+                if (inputText == "/help")
+                {
+                    Console.WriteLine("/exitでアプリを終了");
+                    Console.WriteLine("/modelでモデルを変更");
+                    continue;
+                }
+                if (inputText == "/exit") { break; }
+                if (inputText == "/model")
+                {
+                    Console.WriteLine("モデル名を入力");
+                    var newModel = Console.ReadLine();
+                    if (newModel != null && newModel.Length > 0)
+                    {
+                        model = newModel;
+                    }
+                    continue;
+                }
+
+                var p = new ChatCompletionsParameter();
+                p.AddAssistantMessage(previousOutputText);
+                p.AddUserMessage(inputText);
+                p.Model = model;
+
+                previousOutputText = "";
+                Console.WriteLine("モデル名:" + p.Model);
+                await foreach (var text in cl.ChatCompletionsStreamAsync(p))
+                {
+                    Console.Write(text);
+                    previousOutputText += text;
+                }
+                Console.WriteLine();
+                Console.WriteLine();
             }
+            Console.WriteLine("ご利用ありがとうございました！");
         }
         private async ValueTask ChatCompletion()
         {
@@ -94,6 +122,26 @@ namespace OpenAISampleConsoleApp
                 Console.WriteLine("Function name: " + function.Name);
                 Console.WriteLine("Arguments: " + function.Arguments);
             }
+        }
+        private async ValueTask ChatImageMessage()
+        {
+            var apiKey = File.ReadAllText("C:\\Dev\\ChatGPTApiKey.txt");
+            var cl = new OpenAIClient(apiKey);
+
+            var imageMessage = new ChatImageMessage(ChatMessageRole.User);
+            imageMessage.AddTextContent("この画像について説明してください。");
+            imageMessage.AddImageFile(Path.Combine(Environment.CurrentDirectory, "Image", "Castle.jpg"));
+
+            var p = new ChatCompletionsParameter();
+            p.Messages.Add(imageMessage);
+            p.Model = "gpt-4-vision-preview";
+            p.Stream = true;
+
+            await foreach (var text in cl.ChatCompletionsStreamAsync(p))
+            {
+                Console.Write(text);
+            }
+
         }
     }
 }
