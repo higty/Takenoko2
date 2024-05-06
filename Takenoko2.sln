@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogWebSite", "BlogWebSite\BlogWebSite.csproj", "{D713954B-DD47-4549-BB2E-4DBB7EA2286C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAISampleConsoleApp", "OpenAISampleConsoleApp\OpenAISampleConsoleApp.csproj", "{AEE31266-F266-4566-B873-28F0DA588DCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAISampleConsoleApp", "OpenAISampleConsoleApp\OpenAISampleConsoleApp.csproj", "{AEE31266-F266-4566-B873-28F0DA588DCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAISampleBlazorServerApp", "OpenAISampleBlazorServerApp\OpenAISampleBlazorServerApp.csproj", "{B8393805-C9DD-4B94-9368-4F28D12049BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AEE31266-F266-4566-B873-28F0DA588DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEE31266-F266-4566-B873-28F0DA588DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEE31266-F266-4566-B873-28F0DA588DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8393805-C9DD-4B94-9368-4F28D12049BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8393805-C9DD-4B94-9368-4F28D12049BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8393805-C9DD-4B94-9368-4F28D12049BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8393805-C9DD-4B94-9368-4F28D12049BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

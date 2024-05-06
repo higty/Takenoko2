@@ -1,0 +1,124 @@
+﻿@page "/"
+@using HigLabo.OpenAI
+@rendermode InteractiveServer
+@inject IJSRuntime JavaScript
+
+<style type="text/css">
+    body {
+        background-color: #ececec;
+        margin: 0;
+    }    
+    .message-panel {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .user-name {
+        font-weight: bold;
+    }
+
+    .textbox {
+        height: 32px;
+        border-radius: 16px;
+        padding-left: 12px;
+        font-size:16px;
+        border: solid 1px #333333;
+        box-sizing: border-box;
+        width: calc(100% - 100px);
+        margin-right: 12px;
+    }
+    .button {
+        box-sizing: border-box;
+        border-radius: 16px;
+        background-color: #3366cc;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 4px 12px;
+        border: none 0 transparent;
+    }
+
+    .multiline {
+        white-space: pre-wrap;
+        line-height: 1.2;
+    }
+
+    .container-panel {
+        display: grid;
+        grid-template-rows: 1fr 80px;
+        height: 100vh;
+    }
+    .message-list-panel {
+        overflow-y: scroll;
+        padding: 12px;
+    }
+    .footer-panel {
+        display: flex;
+        align-items: center;
+        background-color: #f3f3f6;
+        padding: 12px;
+    }
+</style>
+
+<div class="container-panel">
+    <div id="message-list-panel" class="message-list-panel">
+        @foreach (var item in this.MessageList)
+        {
+            <div class="message-panel">
+                <div class="user-name">@item.UserName</div>
+                <div class="multiline">@item.Text</div>
+            </div>
+        }
+    </div>
+    <div class="footer-panel">
+        <InputText class="textbox" @bind-Value="@this.InputText"></InputText>
+        <button class="button" @onclick="async e => await SendButton_Click()">送信</button>
+    </div>
+</div>
+
+<script>
+    window.setScrollMessageListPanelToBottom = () => {
+        document.getElementById("message-list-panel").scrollTop = 100000;
+    };
+</script>
+
+@code {
+    public class MessageRecord
+    {
+        public string UserName { get; set; } = "";
+        public string Text { get; set; } = "";
+    }
+    public string InputText { get; set; } = "";
+    public List<MessageRecord> MessageList { get; init; } = new();
+
+    public async ValueTask SendButton_Click()
+    {
+        var apiKey = File.ReadAllText("C:\\Dev\\ChatGPTApiKey.txt");
+        var cl = new OpenAIClient(apiKey);
+
+        var prompt = this.InputText;
+        {
+            var r = new MessageRecord();
+            r.UserName = "Me";
+            r.Text = prompt;
+            this.MessageList.Add(r);
+
+            this.InputText = "";
+            this.StateHasChanged();
+        }
+        {
+            var r = new MessageRecord();
+            r.UserName = "GPT";
+            this.MessageList.Add(r);
+
+            await foreach (var text in cl.ChatCompletionsStreamAsync(prompt, "gpt-4"))
+            {
+                r.Text += text;
+                this.StateHasChanged();
+                await this.JavaScript.InvokeVoidAsync("setScrollMessageListPanelToBottom");
+            }
+        }
+    }
+}

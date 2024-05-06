@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="HigLabo.Core" Version="8.6.2" />
+		<PackageReference Include="HigLabo.NewtonsoftJson" Version="8.0.0.1" />
+		<PackageReference Include="HigLabo.OpenAI" Version="8.7.0" />
+	</ItemGroup>
+
+</Project>
